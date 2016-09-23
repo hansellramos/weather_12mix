@@ -18,6 +18,12 @@
         .decoration-none{
             text-decoration: none;
         }
+        .text-center{
+            text-align: center;
+        }
+        .table-center{
+            margin:auto;
+        }
     </style>
 </head>
 <body>
@@ -52,12 +58,12 @@
                     <template>
                         <div class="mdl-list__item">
                             <span class="mdl-list__item-primary-content">
-                                <a class="mdl-list__item-secondary-action" href="{city_url}" target="_blank">
+                                <a class="mdl-list__item-secondary-action" href="{city_url}" target="_blank" title="View in map">
                                     <i class="material-icons mdl-list__item-avatar">location_on</i>
                                 </a>
                                 <span>{city_name}, {city_country}</span>
                             </span>
-                            <a class="mdl-list__item-secondary-action decoration-none" href="{city_weather_url}">
+                            <a class="mdl-list__item-secondary-action decoration-none" href="{city_weather_url}" title="View weather">
                                 <i class="material-icons">wb_sunny</i> <i class="material-icons">cloud</i>
                             </a>
                         </div>
@@ -65,6 +71,48 @@
                 </div>
                 <!-- Search End -->
                 <!-- Weather -->
+                <h4 class="weather text-center " style="display: none;">Weather in {city_name}, {city_country}
+                    <a class="mdl-list__item-secondary-action" id="city-url" href="" target="_blank" title="View in map">
+                        <i class="material-icons mdl-list__item-avatar">location_on</i>
+                    </a>
+                </h4>
+                <h5 class="weather text-center" id="weather-today">
+                    {today_temp}    <i class="material-icons">cloud</i> {today_cloudiness}    <i class="material-icons">toys</i> {today_wind}
+                </h5>
+                <h5 class="weather text-center">
+                    Today Weather
+                </h5>
+                <div class="weather text-center" id="weather-today-list">
+                    <table class="table-center">
+                        <tr>
+                            <template>
+                                <td class="text-center">
+                                    {starttime} - {endtime}<br />
+                                    {temp}<br />
+                                    <i class="material-icons">cloud</i> {cloudiness}<br />
+                                    <i class="material-icons">toys</i>{wind}
+                                </td>
+                            </template>
+                        </tr>
+                    </table>
+                </div>
+                <h5 class="weather text-center">
+                    Next 5 days Weather
+                </h5>
+                <div class="weather text-center" id="weather-list">
+                    <template>
+                        <table class="table-center mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                            <thead>
+                                <tr>
+                                    <th>{date}</th>
+                                    <th>{temp}</th>
+                                    <th>{cloudiness}</th>
+                                    <th>{wind}</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </template>
+                </div>
                 <!-- Weather End -->
             </div>
         </div>
@@ -86,6 +134,10 @@
                 app.showSearchResults();
                 $(".search").show();
             }else{
+                app.city = JSON.parse(app.city);
+                app.weathers = JSON.parse(app.weathers);
+                app.weather_today = JSON.parse(app.weather_today);
+                app.showWeatherResult();
                 $(".weather").show();
             }
         }
@@ -100,8 +152,59 @@
                 $("#search-results").append(_city);
             });
         }
+        , showWeatherResult: function(){
+            $(".weather #city-url").attr("href",app.google_maps_url_patern.replace('{lat}',app.city.coord.lat).replace('{lon}',app.city.coord.lon).replace('{zoom}',app.google_maps_default_zoom));
+            app.showTodayWeather();
+
+            var template = $("#weather-list template").html();
+            $(app.weathers).each(function(index, value){
+                if(app.weather_today.date != value.date) {
+                    var _date = template;
+                    _date = _date.replace('{date}', value.date);
+                    $("#weather-list").append(_date);
+                }
+            });
+        }
+        , showTodayWeather : function(){
+            var template = $("#weather-today-list table tr template").html();
+            var temp = 0, cloudiness = 0, wind = 0;
+            $(app.weather_today.weathers).each(function(index, value){
+                if(app.weather_today.date != value.date) {
+                    var _period = template;
+                    _period = _period
+                            .replace('{temp}', app.tempToCelsius(value.temp)+"ºC")
+                            .replace('{starttime}', new Date(value.starttime*1000).getHours()+":00")
+                            .replace('{endtime}', new Date(value.endtime*1000).getHours()+":59")
+                            .replace('{cloudiness}', value.cloudiness+"%")
+                            .replace('{wind}', app.windSpeedToKmh(value.wind)+"Km/h")
+                    ;
+                    temp+= app.tempToCelsius(value.temp);
+                    cloudiness += value.cloudiness;
+                    wind += value.wind;
+                    $("#weather-today-list table tr").append(_period);
+                }
+            });
+            temp = temp/app.weather_today.weathers.length;
+            cloudiness = cloudiness/app.weather_today.weathers.length;
+            wind = wind/app.weather_today.weathers.length;
+            $("#weather-today").html(
+                    $("#weather-today").html()
+                            .replace("{today_temp}",(Math.round(temp*100)/100)+"ºC")
+                            .replace("{today_cloudiness}",Math.round(cloudiness*100)/100+"%")
+                            .replace("{today_wind}",app.windSpeedToKmh(Math.round(wind*100)/100)+"Km/h")
+            );
+        }
+        , tempToCelsius : function(value){
+            //return (value-32)*5/9;
+            return Math.round((value - 273.5)*100)/100;
+        }, windSpeedToKmh : function(value){
+            return Math.round(value*3.6*100)/100;
+        }
         , google_maps_url_patern : '{google_maps_url_patern}'
         , google_maps_default_zoom : '{google_maps_default_zoom}'
+        , city:'{city}'
+        , weathers: '{weathers}'
+        , weather_today: '{weather_today}'
     };
     $(document).ready(function(){
         app.init();

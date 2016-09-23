@@ -17,7 +17,7 @@ class Config
     private function __construct()
     {
         $this->APPID = "063b9dcc94488665d845970cc92b5d39";
-        $this->weather_api_url = "http://api.openweathermap.org/data/2.5/forecast?q={city}&mode=json&appid={appid}";
+        $this->weather_api_url = "http://api.openweathermap.org/data/2.5/forecast?id={city}&mode=json&appid={appid}";
         $this->google_maps_default_zoom = 13;
         $this->google_maps_url_patern = "https://www.google.com.co/maps/@{lat},{lon},{zoom}z";
     }

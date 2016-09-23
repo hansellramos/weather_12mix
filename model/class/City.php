@@ -10,7 +10,14 @@ class City implements JsonSerializable{
 
     private $_id, $name, $country, $coord;
 
-    public function __construct($_id, $name, $country, $coord = false)
+    /**
+     * City constructor.
+     * @param $_id
+     * @param $name
+     * @param $country
+     * @param $coord
+     */
+    public function __construct($_id, $name, $country, $coord)
     {
         $this->_id = $_id;
         $this->name = $name;

@@ -29,12 +29,32 @@ class City_model
         return $results;
     }
 
+    public function findById($id){
+        $this->loadCities();
+        $result = false;
+        foreach($this->cities as $city){
+            if($city->_id==$id){
+                $result = new City(
+                    $city->_id,
+                    $city->name,
+                    $city->country,
+                    array(
+                        'lon'=>$city->coord->lon,
+                        'lat'=>$city->coord->lat
+                    )
+                );
+            }
+        }
+        return $result;
+    }
+
     private function loadCities(){
-        $citiesFile = dirname(__DIR__).DS.'data'.DS.'city.list.json';
+        $citiesFile = dirname(__DIR__) . DS . 'data' . DS . 'city.list.json';
         $cities = file_get_contents($citiesFile);
-        $cities = str_replace("}\n{","},{",$cities);
+        $cities = str_replace("}\n{", "},{", $cities);
         $cities = "[$cities]";
         $this->cities = json_decode($cities);
+        $_SESSION['_cities'] = $this->cities;
     }
 
 }

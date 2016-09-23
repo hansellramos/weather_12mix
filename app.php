@@ -1,5 +1,5 @@
 <?php
-ini_set('memory_limit','512M');
+ini_set('memory_limit','1024M');
 define("DS",DIRECTORY_SEPARATOR);
 include_directory(__DIR__.DS.'model'.DS.'class'.DS);
 include_directory(__DIR__.DS.'model'.DS);
