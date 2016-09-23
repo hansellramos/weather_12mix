@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hansel Ramos Test - 12Mix</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.teal-blue.min.css">
+    <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <style>
+        .demo-content {
+            padding: 20px;
+        }
+        template{
+            display: none;
+        }
+        .decoration-none{
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--blue-100">
+    <header class="demo-header mdl-layout__header mdl-layout__header--scroll mdl-color--grey-100 mdl-color-text--grey-800">
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title">Weather Test - Hansel Ramos - 12Mix</span>
+
+            <div class="mdl-layout-spacer"></div>
+            <form method="get">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="city">
+                        <i class="material-icons">search</i>
+                    </label>
+
+                    <div class="mdl-textfield__expandable-holder">
+                        <input class="mdl-textfield__input" type="text" name="city" id="city" value="{query}">
+                        <label class="mdl-textfield__label" for="city">Enter your city...</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </header>
+    <div class="demo-ribbon"></div>
+    <main class="demo-main mdl-layout__content">
+        <div class="demo-container mdl-grid">
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+            <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+                <!-- Search -->
+                <h4 class="search" style="display: none;">Results of "{query}" search</h4>
+                <div class="search demo-list-action mdl-list" id="search-results" style="display: none;">
+                    <template>
+                        <div class="mdl-list__item">
+                            <span class="mdl-list__item-primary-content">
+                                <a class="mdl-list__item-secondary-action" href="{city_url}" target="_blank">
+                                    <i class="material-icons mdl-list__item-avatar">location_on</i>
+                                </a>
+                                <span>{city_name}, {city_country}</span>
+                            </span>
+                            <a class="mdl-list__item-secondary-action decoration-none" href="{city_weather_url}">
+                                <i class="material-icons">wb_sunny</i> <i class="material-icons">cloud</i>
+                            </a>
+                        </div>
+                    </template>
+                </div>
+                <!-- Search End -->
+                <!-- Weather -->
+                <!-- Weather End -->
+            </div>
+        </div>
+        <footer class="demo-footer mdl-mini-footer">
+            <div class="mdl-mini-footer--left-section">
+                <ul class="mdl-mini-footer--link-list">
+                    <li><a href="#">Hola</a></li>
+                </ul>
+            </div>
+        </footer>
+    </main>
+</div>
+<script>
+    var search_results = '{search_results}';
+    var app = {
+        init : function(){
+            if(search_results!='') {
+                search_results = JSON.parse(search_results);
+                app.showSearchResults();
+                $(".search").show();
+            }else{
+                $(".weather").show();
+            }
+        }
+        , showSearchResults : function(){
+            var template = $("#search-results template").html();
+            $(search_results).each(function(index, value){
+                var _city = template;
+                _city = _city.replace("{city_name}",value.name);
+                _city = _city.replace("{city_country}",value.country);
+                _city = _city.replace("{city_url}",app.google_maps_url_patern.replace('{lat}',value.coord.lat).replace('{lon}',value.coord.lon).replace('{zoom}',app.google_maps_default_zoom));
+                _city = _city.replace("{city_weather_url}",location.protocol + '//' + location.host + location.pathname+"?weather="+value._id);
+                $("#search-results").append(_city);
+            });
+        }
+        , google_maps_url_patern : '{google_maps_url_patern}'
+        , google_maps_default_zoom : '{google_maps_default_zoom}'
+    };
+    $(document).ready(function(){
+        app.init();
+    });
+
+</script>
+
+</body>
+</html>
