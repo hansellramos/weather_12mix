@@ -33,18 +33,6 @@
             <span class="mdl-layout-title">Weather Test - Hansel Ramos - 12Mix</span>
 
             <div class="mdl-layout-spacer"></div>
-            <form method="get">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                    <label class="mdl-button mdl-js-button mdl-button--icon" for="city">
-                        <i class="material-icons">search</i>
-                    </label>
-
-                    <div class="mdl-textfield__expandable-holder">
-                        <input class="mdl-textfield__input" type="text" name="city" id="city" value="{query}">
-                        <label class="mdl-textfield__label" for="city">Enter your city...</label>
-                    </div>
-                </div>
-            </form>
         </div>
     </header>
     <div class="demo-ribbon"></div>
@@ -52,6 +40,18 @@
         <div class="demo-container mdl-grid">
             <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
             <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+                <form method="get" class="text-center">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="city">
+                            <i class="material-icons">search</i>
+                        </label>
+
+                        <div class="mdl-textfield__expandable-holder">
+                            <input class="mdl-textfield__input" type="text" name="city" id="city" value="{query}" autofocus placeholder="Enter your city...">
+                            <label class="mdl-textfield__label" for="city">Enter your city...</label>
+                        </div>
+                    </div>
+                </form>
                 <!-- Search -->
                 <h4 class="search" style="display: none;">Results of "{query}" search</h4>
                 <div class="search demo-list-action mdl-list" id="search-results" style="display: none;">
@@ -144,7 +144,7 @@
                 search_results = JSON.parse(search_results);
                 app.showSearchResults();
                 $(".search").show();
-            }else{
+            }else if(app.city!="{city}"){
                 app.city = JSON.parse(app.city);
                 app.weathers = JSON.parse(app.weathers);
                 app.weather_today = JSON.parse(app.weather_today);
