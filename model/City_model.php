@@ -8,11 +8,11 @@
  */
 class City_model
 {
-    private $cities = [];
+    private $cities = array();
 
     public function findByName($name){
         $this->loadCities();
-        $results = [];
+        $results = array();
         foreach($this->cities as $city){
             if(strpos(strtoupper($city->name),strtoupper($name))===0){
                 $results[] = new City(

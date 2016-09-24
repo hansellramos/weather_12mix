@@ -6,10 +6,10 @@
  * Date: 9/23/16
  * Time: 2:10 PM
  */
-class Weather implements JsonSerializable
+class Weather
 {
 
-    protected $starttimme, $endtime, $cloudiness, $wind, $temp, $temp_min, $temp_max;
+    public $starttimme, $endtime, $cloudiness, $wind, $temp, $temp_min, $temp_max;
 
     /**
      * Weather constructor.
@@ -65,6 +65,6 @@ class Weather implements JsonSerializable
      */
     function jsonSerialize()
     {
-        return ['starttime'=>$this->starttimme, 'endtime'=>$this->endtime, 'cloudiness'=>$this->cloudiness, 'wind'=>$this->wind, 'temp'=>$this->temp, 'temp_min'=>$this->temp_min, 'temp_max'=>$this->temp_max];
+        return array('starttime'=>$this->starttimme, 'endtime'=>$this->endtime, 'cloudiness'=>$this->cloudiness, 'wind'=>$this->wind, 'temp'=>$this->temp, 'temp_min'=>$this->temp_min, 'temp_max'=>$this->temp_max);
     }
 }

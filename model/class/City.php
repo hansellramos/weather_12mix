@@ -6,7 +6,7 @@
  * Date: 9/23/16
  * Time: 10:06 AM
  */
-class City implements JsonSerializable{
+class City{
 
     private $_id, $name, $country, $coord;
 
@@ -58,6 +58,6 @@ class City implements JsonSerializable{
      */
     function jsonSerialize()
     {
-        return ["_id"=>$this->_id, "name"=>$this->name, "country"=>$this->country, "coord"=>$this->coord];
+        return array("_id"=>$this->_id, "name"=>$this->name, "country"=>$this->country, "coord"=>$this->coord);
     }
 }

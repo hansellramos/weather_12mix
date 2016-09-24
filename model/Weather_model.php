@@ -21,7 +21,7 @@ class Weather_model
 
     public function parse($string){
         $result = json_decode($string);
-        $weathers = [];
+        $weathers = array();
         foreach($result->list as $weather){
             $weathers[] = $this->parseItem($weather);
         }
@@ -29,7 +29,7 @@ class Weather_model
     }
 
     public function parseItem($item){
-        return new Weather(
+        $w =  new Weather(
             $item->dt
             , $item->dt+(3600*3-1)
             //, date('Hi',$item->dt)
@@ -39,19 +39,20 @@ class Weather_model
             , $item->main->temp_min
             , $item->main->temp_max
         );
+        return $w->jsonSerialize();
     }
 
     public function gruopByDay($list){
-        $items = [];
+        $items = array();
         foreach($list as $item){
-            $date = date('Y-m-d',$item->starttime);
+            $date = date('Y-m-d',$item['starttime']);
             $items[$date][] = $item;
 ;       }
         foreach($items as $date => $item){
-            $items[] = [
+            $items[] = array(
                 'date'=>$date,
                 'weathers'=>$item
-            ];
+            );
             unset($items[$date]);
         }
         return $items;
