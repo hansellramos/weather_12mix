@@ -23,7 +23,7 @@ if(isset($_REQUEST['city'])){
     $template_vars['query'] = $city;
     $city_model = new City_model();
     $search_results = $city_model->findByName($city);
-    $template_vars['search_results'] = JsonEncoder::encode($search_results);
+    $template_vars['search_results'] = JsonEncoder::encodeArray($search_results);
 }else if(isset($_REQUEST['weather'])){
     $city_id = $_REQUEST['weather'];
     $city_model = new City_model();
