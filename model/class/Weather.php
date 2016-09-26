@@ -6,7 +6,7 @@
  * Date: 9/23/16
  * Time: 2:10 PM
  */
-class Weather
+class Weather implements JsonSerializable
 {
 
     public $starttimme, $endtime, $cloudiness, $wind, $temp, $temp_min, $temp_max;

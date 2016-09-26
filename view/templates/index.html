@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hansel Ramos Test - 12Mix</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.teal-blue.min.css">
@@ -23,6 +22,14 @@
         }
         .table-center{
             margin:auto;
+        }
+        #weather-today-list td {
+            border-right: 1px solid rgba(0,0,0,.12);
+            padding: 0px 5px;
+        }
+
+        #weather-today-list td:last-child{
+            border-right: none;
         }
     </style>
 </head>
@@ -83,7 +90,7 @@
                     Today Weather
                 </h5>
                 <div class="weather text-center" id="weather-today-list" style="display: none;">
-                    <table class="table-center">
+                    <table class="table-center mdl-shadow--2dp">
                         <tr>
                             <template>
                                 <td class="text-center">
@@ -144,7 +151,7 @@
                 search_results = JSON.parse(search_results);
                 app.showSearchResults();
                 $(".search").show();
-            }else if(app.city!="{city}"){
+            }else if(app.city.length>10){
                 app.city = JSON.parse(app.city);
                 app.weathers = JSON.parse(app.weathers);
                 app.weather_today = JSON.parse(app.weather_today);

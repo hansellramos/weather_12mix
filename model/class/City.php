@@ -6,7 +6,7 @@
  * Date: 9/23/16
  * Time: 10:06 AM
  */
-class City{
+class City implements JsonSerializable{
 
     private $_id, $name, $country, $coord;
 
